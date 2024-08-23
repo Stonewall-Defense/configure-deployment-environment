@@ -1,0 +1,36 @@
+name: 'Configure Deployment Environment'
+description: 'Set and export environment variables needed to deploy to AWS based on branch name'
+inputs:
+  branch:
+    description: 'name of the branch, pass in GITHUB_REF'
+    required: true
+  application:
+    description: 'application this repo belongs to for finidng the namespace to deploy to'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Get Environmnet From Branch
+      run: |
+        echo "BRANCH=$(echo ${{ inputs.branch }} | cut -d'/' -f 3)"
+        BRANCH=$(echo ${{ inputs.branch }} | cut -d'/' -f 3)
+        if [[ ${BRANCH,,} == 'master' || ${BRANCH,,} == 'main' ]]; then
+            echo "AWS_ENV=PROD" >> $GITHUB_ENV
+        elif [[ ${BRANCH,,} == 'development' || ${BRANCH,,} == 'develop' ]]; then
+            echo "AWS_ENV=DEV" >> $GITHUB_ENV
+        else
+            echo "AWS_ENV=FEATURE" >> $GITHUB_ENV
+        fi      
+    - name: Configure Environment
+      env:
+        APPLICATION: ${{ inputs.application }}  
+      run: |
+        echo "AWS_REGION=${{ vars[format('{0}_AWS_REGION', env.AWS_ENV)] }}" >> $GITHUB_ENV
+        echo "AWS_ACCESS_KEY_ID=${{ secrets[format('{0}_AWS_ACCESS_KEY_ID', env.AWS_ENV)] }}" >> $GITHUB_ENV
+        echo "AWS_SECRET_ACCESS_KEY=${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY', env.AWS_ENV)] }}" >> $GITHUB_ENV
+        echo "NAMESPACE=${{ vars[format('{0}_{1}_NAMESPACE', env.AWS_ENV, env.APPLICATION)] }}" >> $GITHUB_ENV  
+    - name: check env context
+      env:
+        ENV_CONTEXT: ${{ toJson(env) }}  
+      run: |
+        echo "$ENV_CONTEXT"
