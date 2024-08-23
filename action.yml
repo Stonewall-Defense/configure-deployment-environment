@@ -28,6 +28,13 @@ runs:
         else
             echo "AWS_ENV=FEATURE" >> $GITHUB_ENV
         fi      
+
+    - name: check env context
+      env:
+        VARIABLES: ${{ inputs.variables }}  
+      run: |
+        echo "$VARIABLES"
+        
     - name: Configure Environment
       shell: bash
       env:
