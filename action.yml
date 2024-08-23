@@ -46,7 +46,9 @@ runs:
       run: |
         echo "region variable name is: ${{ format('{0}_AWS_REGION', env.AWS_ENV) }}"
         REGION_VARIABLE=$(echo ${{ format('{0}_AWS_REGION', env.AWS_ENV) }})
+        echo $VARIABLES | jq ".$REGION_VARIABLE"
         token=$( echo $VARIABLES | jq ".$REGION_VARIABLE" )
+        echo "token is: $token"
         echo "AUTH_TOKEN=$(echo $token)" >> "$GITHUB_ENV"
         echo "AWS_REGION=${{ env.VARIABLES[format('{0}_AWS_REGION', env.AWS_ENV)] }}" >> $GITHUB_ENV
         echo "AWS_ACCESS_KEY_ID=${{ inputs.secrets[format('{0}_AWS_ACCESS_KEY_ID', env.AWS_ENV)] }}" >> $GITHUB_ENV
