@@ -56,7 +56,7 @@ runs:
         SECRET_ACCESS_KEY_VALUE=$( echo $SECRETS | jq -r ".$SECRET_ACCESS_KEY_VARIABLE" )
         echo "AWS_SECRET_ACCESS_KEY=$(echo $SECRET_ACCESS_KEY_VALUE)" >> "$GITHUB_ENV"        
 
-        NAMESPACE_VARIABLE=$(echo ${{ format('{0}_{1}_NAMESPACE', env.AWS_ENV, env.APPLICATION) }})
+        NAMESPACE_VARIABLE=$(echo ${{ format('{0}_{1}_NAMESPACE', env.AWS_ENV, env.APPLICATION.uppercase) }})
         NAMESPACE_VALUE=$( echo $VARIABLES | jq -r ".$NAMESPACE_VARIABLE" )
         echo "NAMESPACE=$(echo $NAMESPACE_VALUE)" >> "$GITHUB_ENV" 
 
