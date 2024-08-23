@@ -30,9 +30,11 @@ runs:
         fi      
 
     - name: check env context
+      shell: bash
       env:
         VARIABLES: ${{ inputs.variables }}  
       run: |
+        echo "variables:"
         echo "$VARIABLES"
         
     - name: Configure Environment
