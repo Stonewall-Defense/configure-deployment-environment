@@ -30,7 +30,7 @@ runs:
       env:
         APPLICATION: ${{ inputs.application }}  
       run: |
-        echo "AWS_REGION=${{ vars[format('{0}_AWS_REGION', env.AWS_ENV)] }}" >> $GITHUB_ENV
+        echo "AWS_REGION=${{ inputs.variables[format('{0}_AWS_REGION', env.AWS_ENV)] }}" >> $GITHUB_ENV
         echo "AWS_ACCESS_KEY_ID=${{ secrets[format('{0}_AWS_ACCESS_KEY_ID', env.AWS_ENV)] }}" >> $GITHUB_ENV
         echo "AWS_SECRET_ACCESS_KEY=${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY', env.AWS_ENV)] }}" >> $GITHUB_ENV
-        echo "NAMESPACE=${{ vars[format('{0}_{1}_NAMESPACE', env.AWS_ENV, env.APPLICATION)] }}" >> $GITHUB_ENV  
+        echo "NAMESPACE=${{ inputs.variables[format('{0}_{1}_NAMESPACE', env.AWS_ENV, env.APPLICATION)] }}" >> $GITHUB_ENV  
