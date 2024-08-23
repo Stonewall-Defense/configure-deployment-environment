@@ -8,8 +8,11 @@ inputs:
     description: 'application this repo belongs to for finidng the namespace to deploy to'
     required: true
   variables:
-    description: 'Vars as JSON. Recommended to be ${{ toJSON(vars) }}'
+    description: 'Vars as JSON'
     required: true    
+  secrets:
+    description: 'secrets as JSON'
+    required: true      
 runs:
   using: "composite"
   steps:
@@ -31,6 +34,6 @@ runs:
         APPLICATION: ${{ inputs.application }}  
       run: |
         echo "AWS_REGION=${{ inputs.variables[format('{0}_AWS_REGION', env.AWS_ENV)] }}" >> $GITHUB_ENV
-        echo "AWS_ACCESS_KEY_ID=${{ secrets[format('{0}_AWS_ACCESS_KEY_ID', env.AWS_ENV)] }}" >> $GITHUB_ENV
-        echo "AWS_SECRET_ACCESS_KEY=${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY', env.AWS_ENV)] }}" >> $GITHUB_ENV
+        echo "AWS_ACCESS_KEY_ID=${{ inputs.secrets[format('{0}_AWS_ACCESS_KEY_ID', env.AWS_ENV)] }}" >> $GITHUB_ENV
+        echo "AWS_SECRET_ACCESS_KEY=${{ inputs.secrets[format('{0}_AWS_SECRET_ACCESS_KEY', env.AWS_ENV)] }}" >> $GITHUB_ENV
         echo "NAMESPACE=${{ inputs.variables[format('{0}_{1}_NAMESPACE', env.AWS_ENV, env.APPLICATION)] }}" >> $GITHUB_ENV  
