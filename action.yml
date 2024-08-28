@@ -66,6 +66,14 @@ runs:
         CODEBUILD_PROJECT_VALUE=$( echo $VARIABLES | jq -r ".$CODEBUILD_PROJECT_VARIABLE" )
         echo "CODEBUILD_PROJECT=$(echo $CODEBUILD_PROJECT_VALUE)" >> "$GITHUB_ENV"
 
+        HOSTNAME_VARIABLE=$(echo ${{ format('{0}_{1}_HOSTNAME', env.AWS_ENV, env.APPLICATION_NAME) }})
+        HOSTNAME_VALUE=$( echo $VARIABLES | jq -r ".$HOSTNAME_VARIABLE" )
+        echo "HOSTNAME=$(echo $HOSTNAME_VALUE)" >> "$GITHUB_ENV"   
+
+        INGRESS_CLASS_VARIABLE=$(echo ${{ format('{0}_{1}_INGRESS_CLASS', env.AWS_ENV, env.APPLICATION_NAME) }})
+        INGRESS_CLASS_VALUE=$( echo $VARIABLES | jq -r ".$INGRESS_CLASS_VARIABLE" )
+        echo "INGRESS_CLASS=$(echo $INGRESS_CLASS_VALUE)" >> "$GITHUB_ENV"   
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
