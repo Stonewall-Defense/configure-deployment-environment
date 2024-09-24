@@ -12,7 +12,10 @@ inputs:
     required: true    
   secrets:
     description: 'secrets as JSON'
-    required: true      
+    required: true 
+  valuesFile:
+    description: 'values file location'
+    required: false    
 runs:
   using: "composite"
   steps:
@@ -94,6 +97,15 @@ runs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
         echo "ECR_REGISTRY=$(echo $ECR_REGISTRY)" >> "$GITHUB_ENV"        
+
+    - name: convert values file to json    
+      uses: fabasoad/data-format-converter-action@v0
+      id: yaml2json
+      with:
+        input: ${{ inputs.valuesFile }} 
+        from: "yaml"
+        to: "json"
+
       
     - name: Login to Docker Hub
       uses: docker/login-action@v3
