@@ -16,6 +16,7 @@ inputs:
   valuesFile:
     description: 'values file location'
     required: false    
+    default: .github/deployment/values.yaml 
 runs:
   using: "composite"
   steps:
