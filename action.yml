@@ -95,11 +95,17 @@ runs:
       run: |
         echo "ECR_REGISTRY=$(echo $ECR_REGISTRY)" >> "$GITHUB_ENV"        
 
+    - name: Substitue variables in values file
+      env:
+        file: ${{ inputs.valuesFile }} 
+      run: |
+        envsubst < $file  > tempValues.yaml
+
     - name: convert values file to json    
       uses: fabasoad/data-format-converter-action@v0
       id: yaml2json
       with:
-        input: ${{ inputs.valuesFile }} 
+        input: tempValues.yaml
         from: "yaml"
         to: "json"    
 
