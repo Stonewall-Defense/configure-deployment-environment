@@ -102,5 +102,11 @@ runs:
         input: ${{ inputs.valuesFile }} 
         from: "yaml"
         to: "json"    
-        
+
+    - name: Output Values file
+      shell: bash
+      env:
+        VALUES_FILE_OUTPUT: ${{ steps.yaml2json.outputs.output }}}  
+      run: |       
+        echo "VALUES_FILE=$(echo $VALUES_FILE_OUTPUT)" >> "$GITHUB_ENV"
 
