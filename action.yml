@@ -95,6 +95,15 @@ runs:
       run: |
         echo "ECR_REGISTRY=$(echo $ECR_REGISTRY)" >> "$GITHUB_ENV"        
 
+    - name: Set env vars from vars context JSON 
+      shell: bash
+      env: 
+        VARIABLES: ${{ inputs.variables }}
+        SECRETS: ${{ inputs.secrets }}    
+      run: |
+        echo "$VARIABLES" | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' >> $GITHUB_ENV
+        echo "$SECRETS" | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' >> $GITHUB_ENV
+
     - name: Substitue variables in values file
       shell: bash
       env:
