@@ -96,6 +96,7 @@ runs:
         echo "ECR_REGISTRY=$(echo $ECR_REGISTRY)" >> "$GITHUB_ENV"        
 
     - name: Substitue variables in values file
+      shell: bash
       env:
         file: ${{ inputs.valuesFile }} 
       run: |
