@@ -77,6 +77,10 @@ runs:
         INGRESS_CLASS_VARIABLE=$(echo ${{ format('{0}_{1}_INGRESS_CLASS', env.AWS_ENV, env.APPLICATION_NAME) }})
         INGRESS_CLASS_VALUE=$( echo $VARIABLES | jq -r ".$INGRESS_CLASS_VARIABLE" )
         echo "INGRESS_CLASS=$(echo $INGRESS_CLASS_VALUE)" >> "$GITHUB_ENV"   
+
+        REPLICA_COUNT_VARIABLE=$(echo ${{ format('{0}_REPLICA_COUNT', env.AWS_ENV) }})
+        REPLICA_COUNT_VALUE=$( echo $VARIABLES | jq -r ".$REPLICA_COUNT_VARIABLE" )
+        echo "REPLICA_COUNT=$(echo $REPLICA_COUNT_VALUE)" >> "$GITHUB_ENV"
         
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
