@@ -17,6 +17,10 @@ inputs:
     description: 'values file location'
     required: false    
     default: .github/deployment/values.yaml 
+  runnerEnv:
+    description: 'self-hosted or github-hosted'
+    required: false    
+    default: github-hosted    
 runs:
   using: "composite"
   steps:
@@ -83,10 +87,17 @@ runs:
         echo "REPLICA_COUNT=$(echo $REPLICA_COUNT_VALUE)" >> "$GITHUB_ENV"
         
     - name: Configure AWS credentials
+      if: ${{ inputs.runnerEnv == 'github-hosted' }}
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Configure Self-hosted AWS credentials
+      if: ${{ inputs.runnerEnv == 'self-hosted' }}
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
         aws-region: ${{ env.AWS_REGION }}
         
     - name: Login to Amazon ECR
