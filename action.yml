@@ -96,7 +96,7 @@ runs:
 
     - name: Configure Self-hosted AWS credentials
       if: ${{ inputs.runnerEnv == 'self-hosted' }}
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: ${{ env.AWS_REGION }}
         mask-aws-account-id: false
