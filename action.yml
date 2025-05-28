@@ -88,7 +88,7 @@ runs:
         
     - name: Configure AWS credentials
       if: ${{ inputs.runnerEnv == 'github-hosted' }}
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-access-key-id: ${{ env.ENV_AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ env.ENV_AWS_SECRET_ACCESS_KEY }}
